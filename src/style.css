@@ -1,0 +1,187 @@
+/* --- 双阶段透明 + Idle漂浮 + 22个错落 Section (背景透明度调至0) --- */
+
+/* 字体引入：英文 Almendra + 中文毛笔 */
+@import url('https://fonts.googleapis.com/css2?family=Almendra:wght@400;700&family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;700&display=swap');
+
+canvas { position: fixed; top: 0; left: 0; z-index: -1; }
+
+:root {
+  --accent-color: #00ffcc;
+  --spacing: 180px;
+  font-family: 'Almendra', serif;
+}
+
+html { background-color: #000808; overflow-x: hidden; }
+body { margin: 0; min-height: 100%; }
+
+main {
+  width: 100%;
+  color: white;
+  z-index: 99;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  perspective: 2000px;
+  padding-bottom: 80vh;
+}
+
+/* 标题 */
+h1, h2, h3 {
+  font-family: 'Almendra', serif;
+  text-transform: none;
+  text-shadow: 0 0 15px var(--accent-color);
+  margin: 0;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+/* 黑块基础：背景 alpha 调至 0 */
+header, section {
+  position: relative;
+  background: rgba(2, 26, 26, 0); /* 调至完全透明 */
+  backdrop-filter: blur(3px); 
+  -webkit-backdrop-filter: blur(3px);
+  transition: 
+    background 0.6s cubic-bezier(0.2,0.8,0.2,1),
+    backdrop-filter 0.6s ease,
+    transform 0.6s ease,
+    box-shadow 0.6s ease;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  border: 1px solid rgba(0, 255, 204, 0.15); 
+  color: rgba(255, 255, 255, 0.95);
+  padding: 4.5rem;
+  box-sizing: border-box;
+  box-shadow: inset 0 0 0 1px rgba(0,255,204,0.1),
+              0 10px 25px rgba(0,0,0,0.25);
+  animation: floatCloud 10s ease-in-out infinite alternate;
+}
+
+/* Header */
+header {
+  grid-column: 2 / span 9;
+  font-size: 2.8rem;
+  margin-top: 110vh;
+  margin-bottom: var(--spacing);
+  border-radius: 40% 60% 50% 50% / 40% 40% 60% 60%;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+}
+
+/* Hover效果：背景 alpha 调至 0 */
+header:hover, section:hover {
+  background: rgba(2, 26, 26, 0); /* 调至完全透明 */
+  backdrop-filter: blur(8px); 
+  -webkit-backdrop-filter: blur(8px);
+  transform: translateZ(12px) rotateY(0.5deg);
+  box-shadow: inset 0 0 0 1px rgba(0,255,204,0.25),
+              0 18px 45px rgba(0,255,204,0.15);
+  animation-play-state: paused;
+}
+
+header:hover h1 { visibility: hidden; }
+header:hover::after {
+  content: attr(data-chinese);
+  position: absolute;
+  inset: 0;
+  padding: 4.5rem;
+  box-sizing: border-box;
+  color: var(--accent-color);
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 5rem;
+  text-shadow: 0 0 20px var(--accent-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateZ(10px);
+  animation: inkTealFade 0.6s ease-out forwards;
+  background: transparent;
+}
+
+/* Section 默认样式 */
+section {
+  margin-bottom: var(--spacing);
+  min-height: 200px;
+  padding: 4rem;
+  box-sizing: border-box;
+  border-radius: 30% 70% 40% 60% / 50% 30% 70% 50%;
+  border-left: 6px solid rgba(0,255,204,0.3);
+  position: relative;
+}
+
+section .content {
+  font-size: 1.3rem;
+  line-height: 1.5;
+  font-family: 'Almendra', serif;
+}
+
+section:hover .content { visibility: hidden; }
+
+section:hover::after {
+  content: attr(data-chinese);
+  position: absolute;
+  inset: 0;
+  padding: 4rem;
+  box-sizing: border-box;
+  color: var(--accent-color);
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateZ(6px);
+  animation: inkTealFade 0.6s ease-out forwards;
+  background: transparent;
+}
+
+/* 22个 Section 布局保持不变 */
+section:nth-of-type(1)  { grid-column: 1 / span 7; margin-left: 3vw; min-height: 200px; }
+section:nth-of-type(2)  { grid-column: 5 / span 7; margin-left: 0; min-height: 220px; }
+section:nth-of-type(3)  { grid-column: 2 / span 7; margin-left: 5vw; min-height: 180px; }
+section:nth-of-type(4)  { grid-column: 4 / span 7; margin-left: 0; min-height: 240px; }
+section:nth-of-type(5)  { grid-column: 1 / span 6; margin-left: 2vw; min-height: 210px; }
+section:nth-of-type(6)  { grid-column: 5 / span 7; margin-left: 0; min-height: 190px; }
+section:nth-of-type(7)  { grid-column: 2 / span 8; margin-left: 4vw; min-height: 230px; }
+section:nth-of-type(8)  { grid-column: 3 / span 7; margin-left: 0; min-height: 200px; }
+section:nth-of-type(9)  { grid-column: 1 / span 8; margin-left: 3vw; min-height: 220px; }
+section:nth-of-type(10) { grid-column: 4 / span 6; margin-left: 0; min-height: 210px; }
+section:nth-of-type(11) { grid-column: 2 / span 7; margin-left: 1vw; min-height: 200px; }
+section:nth-of-type(12) { grid-column: 5 / span 7; margin-left: 0; min-height: 230px; }
+section:nth-of-type(13) { grid-column: 5 / span 6; margin-left: 2vw; min-height: 190px; }
+section:nth-of-type(14) { grid-column: 4 / span 7; margin-left: 0; min-height: 220px; }
+section:nth-of-type(15) { grid-column: 2 / span 8; margin-left: 3vw; min-height: 210px; }
+section:nth-of-type(16) { grid-column: 3 / span 7; margin-left: 0; min-height: 200px; }
+section:nth-of-type(17) { grid-column: 1 / span 7; margin-left: 4vw; min-height: 230px; }
+section:nth-of-type(18) { grid-column: 4 / span 6; margin-left: 0; min-height: 210px; }
+section:nth-of-type(19) { grid-column: 2 / span 7; margin-left: 2vw; min-height: 220px; }
+section:nth-of-type(20) { grid-column: 3 / span 8; margin-left: 0; min-height: 200px; }
+section:nth-of-type(21) { grid-column: 1 / span 6; margin-left: 3vw; min-height: 210px; }
+section:nth-of-type(22) { grid-column: 4 / span 7; margin-left: 0; min-height: 220px; }
+
+/* 动画与滚动条保持不变 */
+@keyframes inkTealFade { from { opacity:0; filter:blur(10px); } to { opacity:1; filter:blur(0); } }
+@keyframes floatCloud {
+  0% { transform: translate(0px,0px) scale(1); }
+  25% { transform: translate(2px,-2px) scale(1.01); }
+  50% { transform: translate(-2px,2px) scale(0.995); }
+  75% { transform: translate(1px,-1px) scale(1.005); }
+  100% { transform: translate(0px,0px) scale(1); }
+}
+
+::-webkit-scrollbar { width: 12px; }
+::-webkit-scrollbar-track { background: rgba(0,8,8,0.4); border-radius: 6px; }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg,#00ffcc,#00ccff); border-radius:6px; box-shadow:0 0 12px #00ffcc,0 0 20px #00ccff; }
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg,#00ffcc,#00ccff); box-shadow:0 0 16px #00ffcc,0 0 24px #00ccff; }
+
+@media (max-width:1024px){
+  header, section { grid-column:1 / 13 !important; width:90%; margin:20px auto !important; padding:2.5rem 1.5rem !important; }
+  main { padding-bottom:50vh; }
+}
+
+
+/* Prevent awkward single-word final lines where supported */
+h1,
+section .content p {
+  text-wrap: pretty;
+}
